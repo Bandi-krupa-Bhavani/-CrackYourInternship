@@ -7,7 +7,7 @@ class Solution {
                 nonZero++;
             }
         }
-        for(in ti=nonZero;i<nums.length;i++){
+        for(int i=nonZero;i<nums.length;i++){
             nums[i]=0;
         }
     }
