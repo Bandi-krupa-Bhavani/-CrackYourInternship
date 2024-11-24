@@ -1,0 +1,39 @@
+import java.util.*;
+
+class Solution {
+    public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (List<Integer> connection : connections) {
+            int u = connection.get(0);
+            int v = connection.get(1);
+            graph[u].add(v);
+            graph[v].add(u);
+        }
+        int[] time = new int[n];
+        int[] low = new int[n];
+        Arrays.fill(time, -1);
+        int[] t = new int[1];
+        dfs(0, -1, graph, time, low, t, result);
+        return result;
+    }
+
+    private void dfs(int u, int parent, List<Integer>[] graph, int[] time, int[] low, int[] t, List<List<Integer>> result) {
+        time[u] = low[u] = t[0]++;
+        for (int v : graph[u]) {
+            if (v == parent) continue;
+            if (time[v] == -1) {
+                dfs(v, u, graph, time, low, t, result);
+                low[u] = Math.min(low[u], low[v]);
+                if (low[v] > time[u]) {
+                    result.add(Arrays.asList(u, v));
+                }
+            } else {
+                low[u] = Math.min(low[u], time[v]);
+            }
+        }
+    }
+}
